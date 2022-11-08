@@ -25,6 +25,7 @@ use be\nnse\api\item\default\CustomItem;
 use pocketmine\item\ItemUseResult;
 use pocketmine\math\Vector3;
 use pocketmine\player\Player;
+use pocketmine\utils\TextFormat;
 
 abstract class CommandItem extends CustomItem
 {
@@ -34,12 +35,11 @@ abstract class CommandItem extends CustomItem
         int $id,
         int $meta,
         string $command,
-        string $identifyName = "Unknown",
         string $customName = "",
         array $lore = []
     )
     {
-        parent::__construct($id, $meta, $identifyName, $customName, $lore);
+        parent::__construct($id, $meta, $customName, $lore);
         $this->getNamedTag()->setString(self::TAG_COMMAND, $command);
     }
 

@@ -36,24 +36,29 @@ use pocketmine\item\ItemIds;
 use pocketmine\item\ItemUseResult;
 use pocketmine\item\VanillaItems;
 use pocketmine\player\Player;
+use pocketmine\utils\TextFormat;
 use pocketmine\world\sound\BowShootSound;
 
 abstract class CustomBow extends Bow implements ICustomItem
 {
     /**
-     * @param string $identifyName
      * @param string $customName
      * @param array $lore
      */
     public function __construct(
-        string $identifyName = "Unknown",
         string $customName = "",
         array $lore = []
     )
     {
-        parent::__construct(new ItemIdentifier(ItemIds::BOW, 0), $identifyName);
+        parent::__construct(new ItemIdentifier(ItemIds::BOW, 0), TextFormat::clean($customName));
 
-        if ($customName !== "") $this->setCustomName($customName);
+        if ($customName !== "") {
+            if ($customName === TextFormat::clean($customName)) {
+                $this->setCustomName(TextFormat::RESET . $customName);
+            } else {
+                $this->setCustomName($customName);
+            }
+        }
         if (!empty($lore)) $this->setLore($lore);
     }
 

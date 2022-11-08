@@ -1,0 +1,6 @@
+name: libCustomItem
+version: 1.0.0
+api: 4.0.0
+antigen: be\nnse\api\item
+author: nnse
+php: 8.0

@@ -24,27 +24,32 @@ namespace be\nnse\api\item\default;
 use be\nnse\api\item\ICustomItem;
 use pocketmine\item\ItemIdentifier;
 use pocketmine\item\Tool;
+use pocketmine\utils\TextFormat;
 
 abstract class CustomTool extends Tool implements ICustomItem
 {
     /**
      * @param int $id
      * @param int $meta
-     * @param string $identifyName
      * @param string $customName
      * @param array $lore
      */
     public function __construct(
         int $id,
         int $meta,
-        string $identifyName = "Unknown",
         string $customName = "",
         array $lore = []
     )
     {
-        parent::__construct(new ItemIdentifier($id, $meta), $identifyName);
+        parent::__construct(new ItemIdentifier($id, $meta), TextFormat::clean($customName));
 
-        if ($customName !== "") $this->setCustomName($customName);
+        if ($customName !== "") {
+            if ($customName === TextFormat::clean($customName)) {
+                $this->setCustomName(TextFormat::RESET . $customName);
+            } else {
+                $this->setCustomName($customName);
+            }
+        }
         if (!empty($lore)) $this->setLore($lore);
     }
 }

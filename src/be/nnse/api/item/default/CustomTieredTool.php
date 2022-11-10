@@ -25,6 +25,7 @@ use be\nnse\api\item\ICustomItem;
 use pocketmine\item\ItemIdentifier;
 use pocketmine\item\TieredTool;
 use pocketmine\item\ToolTier;
+use pocketmine\utils\TextFormat;
 
 abstract class CustomTieredTool extends TieredTool implements ICustomItem
 {
@@ -32,7 +33,6 @@ abstract class CustomTieredTool extends TieredTool implements ICustomItem
      * @param int $id
      * @param int $meta
      * @param ToolTier $toolTier
-     * @param string $identifyName
      * @param string $customName
      * @param array $lore
      */
@@ -40,14 +40,19 @@ abstract class CustomTieredTool extends TieredTool implements ICustomItem
         int $id,
         int $meta,
         ToolTier $toolTier,
-        string $identifyName = "Unknown",
         string $customName = "",
         array $lore = []
     )
     {
-        parent::__construct(new ItemIdentifier($id, $meta), $identifyName, $toolTier);
+        parent::__construct(new ItemIdentifier($id, $meta), TextFormat::clean($customName), $toolTier);
 
-        if ($customName !== "") $this->setCustomName($customName);
+        if ($customName !== "") {
+            if ($customName === TextFormat::clean($customName)) {
+                $this->setCustomName(TextFormat::RESET . $customName);
+            } else {
+                $this->setCustomName($customName);
+            }
+        }
         if (!empty($lore)) $this->setLore($lore);
     }
 }
